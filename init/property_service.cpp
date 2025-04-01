@@ -936,7 +936,7 @@ static const char *snet_prop_value[] = {
 };
 
 static void workaround_snet_properties() {
-    std::string build_type = android::base::GetProperty("ro.build.type", "");
+    bool is_debuggable = android::base::GetBoolProperty("ro.debuggable", false);
 
     // Bail out if this is recovery, fastbootd, or anything other than a normal boot.
     // fastbootd, in particular, needs the real values so it can allow flashing on
@@ -945,8 +945,8 @@ static void workaround_snet_properties() {
         return;
     }
 
-    // Exit if eng build
-    if (build_type == "eng") {
+    // Exit if debug build
+    if (is_debuggable) {
         return;
     }
 
@@ -955,7 +955,7 @@ static void workaround_snet_properties() {
 
     std::string error;
 
-    // Hide all sensitive props 
+    // Hide all sensitive props
     LOG(INFO) << "snet: Hiding sensitive props";
     for (int i = 0; snet_prop_key[i]; ++i) {
         PropertySetNoSocket(snet_prop_key[i], snet_prop_value[i], &error);
