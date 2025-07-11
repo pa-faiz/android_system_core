@@ -84,6 +84,7 @@ init_device_sources = [
     "uevent_listener.cpp",
     "ueventd.cpp",
     "ueventd_parser.cpp",
+    "vendor_init.cpp",
 ]
 init_host_sources = [
     "check_builtins.cpp",
@@ -100,14 +101,6 @@ soong_config_module_type {
     ],
     properties: [
         "cflags",
-    ],
-}
-
-cc_library_static {
-    name: "vendor_init",
-    recovery_available: true,
-    srcs: [
-        "vendor_init.cpp",
     ],
 }
 
@@ -228,7 +221,6 @@ cc_defaults {
     defaults: [
         "init_defaults",
         "selinux_policy_version",
-        "vendor_init_defaults",
     ],
     srcs: init_common_sources + init_device_sources,
     export_include_dirs: ["."],
